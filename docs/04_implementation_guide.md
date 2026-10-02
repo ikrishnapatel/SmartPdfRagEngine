@@ -8,12 +8,12 @@ In this phase, we will establish the core retrieval-augmented generation pipelin
 
 ### Step 1: Setup & Document Loading
 - **Action:** Initialize the Spring Boot project.
-- **Dependencies:** Add LangChain4j Core, LangChain4j Gemini, LangChain4j ChromaDB, and Web dependencies.
-- **Implementation:** Create an API endpoint (`/upload-doc`) to accept PDF or TXT files. Use Apache PDFBox or LangChain4j's inbuilt document loader to extract raw text from the files.
+- **Dependencies:** Add Spring AI Core, Spring AI Gemini, Spring AI ChromaDB, and Web dependencies.
+- **Implementation:** Create an API endpoint (`/upload-doc`) to accept PDF or TXT files. Use Apache PDFBox or Spring AI's inbuilt document loader to extract raw text from the files.
 
 ### Step 2: Semantic Chunking
 - **Action:** Divide the extracted text into manageable chunks.
-- **Implementation:** Create a `DocumentSplitter` service. Configure it to split text into chunks of exactly 500 tokens (words), ensuring a 50-token overlap between consecutive chunks to maintain context continuity.
+- **Implementation:** Create a `DocumentSplitter` service (`CustomOverlappingSplitter`). Configure it to split text into chunks of exactly 1500 characters, ensuring a 250-character overlap between consecutive chunks to maintain context continuity.
 
 ### Step 3: Embeddings & ChromaDB Storage
 - **Action:** Convert text chunks to vectors and store them.
@@ -32,6 +32,12 @@ In this phase, we will establish the core retrieval-augmented generation pipelin
   5. Send this prompt to the Gemini LLM and return the generated response to the frontend.
 
 *Milestone: The Basic RAG is now live! The system can answer questions based on the uploaded documents.*
+
+### Step 4.5: API Management & Documentation
+- **Action:** Provide chunk management endpoints and expose interactive API documentation.
+- **Implementation:**
+  1. Add `springdoc-openapi-starter-webmvc-ui` to auto-generate Swagger UI (`/swagger-ui.html`) and OpenAPI JSON (`/v3/api-docs`).
+  2. Implement a `ChunkManagementController` to provide endpoints (`GET`, `DELETE`) for listing and managing ChromaDB collections and chunks.
 
 ---
 

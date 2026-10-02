@@ -1,9 +1,6 @@
 package com.hybridrag.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import org.springframework.web.client.RestClient;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.ai.chroma.ChromaApi;
 import org.springframework.ai.embedding.EmbeddingModel;
 import org.springframework.ai.vectorstore.ChromaVectorStore;
@@ -23,6 +20,8 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+
+
 @Configuration
 public class SpringAiConfig {
 
@@ -93,4 +92,5 @@ public class SpringAiConfig {
     public ChromaVectorStore llmVectorStore(ChromaApi chromaApi, EmbeddingModel embeddingModel) {
         return new ChromaVectorStore(embeddingModel, chromaApi, llmCollectionName, true);
     }
+
 }

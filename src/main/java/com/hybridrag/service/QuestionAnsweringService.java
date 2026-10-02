@@ -99,7 +99,6 @@ public class QuestionAnsweringService {
                 queries.add(userQuery.trim());
             }
 
-            // 2. Perform search for each query and combine results
             ChromaVectorStore selectedStore = useLLMEmbedding ? llmVectorStore : defaultVectorStore;
             Set<String> uniqueContextChunks = new LinkedHashSet<>();
 
@@ -118,14 +117,13 @@ public class QuestionAnsweringService {
             List<String> contextChunks = new ArrayList<>(uniqueContextChunks);
             String combinedContext = String.join("\n\n--- Chunk ---\n\n", contextChunks);
 
-            // 3. Construct final Prompt Template
+
             String prompt = String.format(
                     "Answer the question based ONLY on the following context: %s. Question: %s",
                     combinedContext,
                     userQuery
             );
 
-            // 4. Send prompt to Gemini model and get response
             String answer = chatClient.prompt(new Prompt(prompt)).call().content();
             
             return new QuestionAnswerResponseDto(
