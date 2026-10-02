@@ -66,15 +66,20 @@ public class PdfDocumentSplitterService {
     }
 
     private List<Document> parseDocument(MultipartFile file) throws Exception {
-        Resource resource = file.getResource();
-        PagePdfDocumentReader pdfReader = new PagePdfDocumentReader(resource,
-                PdfDocumentReaderConfig.builder()
-                        .withPageExtractedTextFormatter(ExtractedTextFormatter.builder()
-                                .withNumberOfBottomTextLinesToDelete(0)
-                                .withNumberOfTopPagesToSkipBeforeDelete(0)
-                                .build())
-                        .withPagesPerDocument(1)
-                        .build());
-        return pdfReader.get();
+        try {
+            Resource resource = file.getResource();
+            PagePdfDocumentReader pdfReader = new PagePdfDocumentReader(resource,
+                    PdfDocumentReaderConfig.builder()
+                            .withPageExtractedTextFormatter(ExtractedTextFormatter.builder()
+                                    .withNumberOfBottomTextLinesToDelete(0)
+                                    .withNumberOfTopPagesToSkipBeforeDelete(0)
+                                    .build())
+                            .withPagesPerDocument(1)
+                            .build());
+            return pdfReader.get();
+        } catch (Exception e) {
+            logger.error("Error occurred while parsing the document: {}", file.getOriginalFilename(), e);
+            throw new Exception("Failed to parse document: " + file.getOriginalFilename(), e);
+        }
     }
 }

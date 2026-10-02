@@ -1,7 +1,7 @@
 package com.hybridrag.controller;
 
-import com.hybridrag.dto.QuestionAnswerResponseDto;
-import com.hybridrag.service.QuestionAnsweringService;
+import com.hybridrag.dto.UserQueryResponseDTO;
+import com.hybridrag.service.UserQueryService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,31 +10,31 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/documents")
-public class QuestionAnsweringController {
+public class UserQueryController {
 
-    private final QuestionAnsweringService questionAnsweringService;
+    private final UserQueryService userQueryService;
 
-    public QuestionAnsweringController(QuestionAnsweringService questionAnsweringService) {
-        this.questionAnsweringService = questionAnsweringService;
+    public UserQueryController(UserQueryService userQueryService) {
+        this.userQueryService = userQueryService;
     }
 
     @GetMapping("/ask-query")
-    public ResponseEntity<QuestionAnswerResponseDto> askQuestion(
+    public ResponseEntity<UserQueryResponseDTO> askQuestion(
             @RequestParam("query") String query,
             @RequestParam(value = "useLLMEmbedding", defaultValue = "true") boolean useLLMEmbedding,
             @RequestParam(value = "topK", defaultValue = "2") int topK) {
 
-        QuestionAnswerResponseDto response = questionAnsweringService.answerQuestion(query, useLLMEmbedding, topK);
+        UserQueryResponseDTO response = userQueryService.answerQuestion(query, useLLMEmbedding, topK);
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/ask-query-multi")
-    public ResponseEntity<QuestionAnswerResponseDto> askQuestionMulti(
+    public ResponseEntity<UserQueryResponseDTO> askQuestionMulti(
             @RequestParam("query") String query,
             @RequestParam(value = "useLLMEmbedding", defaultValue = "true") boolean useLLMEmbedding,
             @RequestParam(value = "topK", defaultValue = "2") int topK) {
 
-        QuestionAnswerResponseDto response = questionAnsweringService.answerQuestionWithMultiQuery(query, useLLMEmbedding, topK);
+        UserQueryResponseDTO response = userQueryService.answerQuestionWithMultiQuery(query, useLLMEmbedding, topK);
         return ResponseEntity.ok(response);
     }
 }

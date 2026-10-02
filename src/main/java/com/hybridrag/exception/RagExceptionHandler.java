@@ -1,6 +1,6 @@
 package com.hybridrag.exception;
 
-import com.hybridrag.dto.QuestionAnswerResponseDto;
+import com.hybridrag.dto.UserQueryResponseDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -12,8 +12,8 @@ import java.util.Collections;
 public class RagExceptionHandler {
 
     @ExceptionHandler(RagQueryProcessingException.class)
-    public ResponseEntity<QuestionAnswerResponseDto> handleRagQueryProcessingException(RagQueryProcessingException ex) {
-        QuestionAnswerResponseDto response = new QuestionAnswerResponseDto(
+    public ResponseEntity<UserQueryResponseDTO> handleRagQueryProcessingException(RagQueryProcessingException ex) {
+        UserQueryResponseDTO response = new UserQueryResponseDTO(
                 ex.getStatusCode(),
                 "RAG Processing Error: " + ex.getMessage(),
                 null,
@@ -24,8 +24,8 @@ public class RagExceptionHandler {
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<QuestionAnswerResponseDto> handleIllegalArgumentException(IllegalArgumentException ex) {
-        QuestionAnswerResponseDto response = new QuestionAnswerResponseDto(
+    public ResponseEntity<UserQueryResponseDTO> handleIllegalArgumentException(IllegalArgumentException ex) {
+        UserQueryResponseDTO response = new UserQueryResponseDTO(
                 HttpStatus.BAD_REQUEST.value(),
                 "Invalid Request: " + ex.getMessage(),
                 null,

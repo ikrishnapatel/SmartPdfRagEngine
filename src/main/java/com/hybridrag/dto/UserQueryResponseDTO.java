@@ -2,7 +2,7 @@ package com.hybridrag.dto;
 
 import java.util.List;
 
-public class QuestionAnswerResponseDto {
+public class UserQueryResponseDTO {
 
     private int statusCode;
     private String message;
@@ -10,10 +10,10 @@ public class QuestionAnswerResponseDto {
     private String question;
     private List<String> retrievedContextChunks;
 
-    public QuestionAnswerResponseDto() {
+    public UserQueryResponseDTO() {
     }
 
-    public QuestionAnswerResponseDto(int statusCode, String message, String answer, String question, List<String> retrievedContextChunks) {
+    public UserQueryResponseDTO(int statusCode, String message, String answer, String question, List<String> retrievedContextChunks) {
         this.statusCode = statusCode;
         this.message = message;
         this.answer = answer;

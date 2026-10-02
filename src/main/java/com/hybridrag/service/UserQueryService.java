@@ -1,6 +1,6 @@
 package com.hybridrag.service;
 
-import com.hybridrag.dto.QuestionAnswerResponseDto;
+import com.hybridrag.dto.UserQueryResponseDTO;
 import com.hybridrag.exception.RagQueryProcessingException;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.model.ChatModel;
@@ -8,6 +8,7 @@ import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.vectorstore.ChromaVectorStore;
 import org.springframework.ai.vectorstore.SearchRequest;
+import org.springframework.ai.vectorstore.filter.FilterExpressionBuilder;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
@@ -19,13 +20,13 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
-public class QuestionAnsweringService {
+public class UserQueryService {
 
     private final ChromaVectorStore defaultVectorStore;
     private final ChromaVectorStore llmVectorStore;
     private final ChatClient chatClient;
 
-    public QuestionAnsweringService(
+    public UserQueryService(
             @Qualifier("defaultVectorStore") ChromaVectorStore defaultVectorStore,
             @Qualifier("llmVectorStore") ChromaVectorStore llmVectorStore,
             ChatModel chatModel) {
@@ -34,18 +35,20 @@ public class QuestionAnsweringService {
         this.chatClient = ChatClient.create(chatModel);
     }
 
-    public QuestionAnswerResponseDto answerQuestion(String userQuery, boolean useLLMEmbedding, int topK) {
+    public UserQueryResponseDTO answerQuestion(String userQuery, boolean useLLMEmbedding, int topK) {
+        
         if (userQuery == null || userQuery.trim().isEmpty()) {
             throw new IllegalArgumentException("User query cannot be empty.");
         }
 
         try {
+
             ChromaVectorStore selectedStore = useLLMEmbedding ? llmVectorStore : defaultVectorStore;
 
             List<Document> documents = selectedStore.similaritySearch(
                     SearchRequest.query(userQuery)
                             .withTopK(topK)
-                            .withFilterExpression(new org.springframework.ai.vectorstore.filter.FilterExpressionBuilder().ne("dummy", "dummy").build())
+                            .withFilterExpression(new FilterExpressionBuilder().ne("dummy", "dummy").build())
             );
 
             List<String> contextChunks = documents.stream()
@@ -63,7 +66,7 @@ public class QuestionAnsweringService {
 
             String answer = chatClient.prompt(new Prompt(prompt)).call().content();
             
-            return new QuestionAnswerResponseDto(
+            return new UserQueryResponseDTO(
                     200,
                     "Success",
                     answer,
@@ -75,7 +78,7 @@ public class QuestionAnsweringService {
         }
     }
 
-    public QuestionAnswerResponseDto answerQuestionWithMultiQuery(String userQuery, boolean useLLMEmbedding, int topK) {
+    public UserQueryResponseDTO answerQuestionWithMultiQuery(String userQuery, boolean useLLMEmbedding, int topK) {
         if (userQuery == null || userQuery.trim().isEmpty()) {
             throw new IllegalArgumentException("User query cannot be empty.");
         }
@@ -126,7 +129,7 @@ public class QuestionAnsweringService {
 
             String answer = chatClient.prompt(new Prompt(prompt)).call().content();
             
-            return new QuestionAnswerResponseDto(
+            return new UserQueryResponseDTO(
                     200,
                     "Success",
                     answer,
