@@ -1,4 +1,4 @@
-package com.hybridrag.controller;
+package com.hybridrag.controller.upload;
 
 import com.hybridrag.service.PdfDocumentSplitterService;
 

@@ -1,4 +1,4 @@
-package com.hybridrag.controller;
+package com.hybridrag.controller.health;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;

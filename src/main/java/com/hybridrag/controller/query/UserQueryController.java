@@ -1,4 +1,4 @@
-package com.hybridrag.controller;
+package com.hybridrag.controller.query;
 
 import com.hybridrag.dto.UserQueryResponseDTO;
 import com.hybridrag.service.UserQueryService;

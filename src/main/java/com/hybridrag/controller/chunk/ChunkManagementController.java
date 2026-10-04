@@ -1,4 +1,4 @@
-package com.hybridrag.controller;
+package com.hybridrag.controller.chunk;
 
 import com.hybridrag.service.ChunkManagementService;
 import org.slf4j.Logger;

@@ -1,4 +1,4 @@
-package com.hybridrag.controller;
+package com.hybridrag.controller.search;
 
 import com.hybridrag.dto.SearchResultDto;
 import com.hybridrag.service.DocumentSearchService;
