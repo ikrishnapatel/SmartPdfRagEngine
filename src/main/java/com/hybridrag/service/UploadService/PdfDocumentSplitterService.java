@@ -1,4 +1,4 @@
-package com.hybridrag.service;
+package com.hybridrag.service.UploadService;
 
 import org.springframework.ai.document.Document;
 import org.springframework.ai.reader.ExtractedTextFormatter;
@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.hybridrag.service.SearchService.BM25SearchService;
 import com.hybridrag.service.helper.CustomOverlappingSplitter;
 import java.util.HashMap;
 import java.util.List;
@@ -63,6 +65,7 @@ public class PdfDocumentSplitterService {
         response.put("status", 200);
         response.put("message", "Document processed successfully! Embeddings generated.");
         return response;
+        
     }
 
     private List<Document> parseDocument(MultipartFile file) throws Exception {

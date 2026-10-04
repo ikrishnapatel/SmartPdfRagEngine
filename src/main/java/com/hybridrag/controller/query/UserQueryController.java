@@ -1,7 +1,8 @@
 package com.hybridrag.controller.query;
 
 import com.hybridrag.dto.UserQueryResponseDTO;
-import com.hybridrag.service.UserQueryService;
+import com.hybridrag.service.SearchService.UserQueryService;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -1,6 +1,7 @@
-package com.hybridrag.service;
+package com.hybridrag.service.SearchService;
 
 import com.hybridrag.dto.SearchResultDto;
+
 import org.springframework.ai.document.Document;
 import org.springframework.ai.vectorstore.ChromaVectorStore;
 import org.springframework.ai.vectorstore.SearchRequest;

@@ -1,7 +1,5 @@
 package com.hybridrag.controller.upload;
 
-import com.hybridrag.service.PdfDocumentSplitterService;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.hybridrag.service.UploadService.PdfDocumentSplitterService;
 
 @RestController
 @CrossOrigin(origins = "*") 

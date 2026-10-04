@@ -1,4 +1,4 @@
-package com.hybridrag.service;
+package com.hybridrag.service.SearchService;
 
 import com.hybridrag.dto.UserQueryResponseDTO;
 import com.hybridrag.exception.RagQueryProcessingException;

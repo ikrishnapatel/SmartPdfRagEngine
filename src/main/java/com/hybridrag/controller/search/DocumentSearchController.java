@@ -1,7 +1,8 @@
 package com.hybridrag.controller.search;
 
 import com.hybridrag.dto.SearchResultDto;
-import com.hybridrag.service.DocumentSearchService;
+import com.hybridrag.service.SearchService.DocumentSearchService;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

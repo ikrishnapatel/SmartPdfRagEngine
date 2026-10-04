@@ -1,4 +1,4 @@
-package com.hybridrag.service;
+package com.hybridrag.service.SearchService;
 
 import org.springframework.ai.document.Document;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;

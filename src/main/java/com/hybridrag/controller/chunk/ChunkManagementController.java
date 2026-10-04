@@ -1,10 +1,11 @@
 package com.hybridrag.controller.chunk;
 
-import com.hybridrag.service.ChunkManagementService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import com.hybridrag.service.ChunksService.ChunkManagementService;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.hybridrag.service;
+package com.hybridrag.service.ChunksService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
