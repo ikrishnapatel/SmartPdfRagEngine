@@ -38,4 +38,14 @@ public class UserQueryController {
         UserQueryResponseDTO response = userQueryService.answerQuestionWithMultiQuery(query, useLLMEmbedding, topK);
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/ask-query-hybrid")
+    public ResponseEntity<UserQueryResponseDTO> askQuestionHybrid(
+            @RequestParam("query") String query,
+            @RequestParam(value = "useLLMEmbedding", defaultValue = "true") boolean useLLMEmbedding,
+            @RequestParam(value = "topK", defaultValue = "3") int topK) {
+
+        UserQueryResponseDTO response = userQueryService.answerQuestionWithHybridSearch(query, useLLMEmbedding, topK);
+        return ResponseEntity.ok(response);
+    }
 }

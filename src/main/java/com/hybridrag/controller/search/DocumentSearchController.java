@@ -26,7 +26,7 @@ public class DocumentSearchController {
             @RequestParam("query") String query,
             @RequestParam(value = "maxResults", defaultValue = "5") int maxResults,
             @RequestParam(value = "minScore", defaultValue = "0.0") double minScore,
-            @RequestParam(value = "useLLMEmbedding", defaultValue = "false") boolean useLLMEmbedding) {
+            @RequestParam(value = "useLLMEmbedding", defaultValue = "true") boolean useLLMEmbedding) {
 
         if (query == null || query.trim().isEmpty()) {
             return ResponseEntity.badRequest().body("Query parameter 'query' cannot be empty.");

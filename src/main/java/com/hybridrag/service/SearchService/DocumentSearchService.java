@@ -11,8 +11,13 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @Service
 public class DocumentSearchService {
+
+    private static final Logger logger = LoggerFactory.getLogger(DocumentSearchService.class);
 
     private final ChromaVectorStore defaultVectorStore;
     private final ChromaVectorStore llmVectorStore;
@@ -40,6 +45,10 @@ public class DocumentSearchService {
         return documents.stream().map(doc -> {
             String text = doc.getContent();
             Double score = doc.getMetadata().containsKey("distance") ? ((Number) doc.getMetadata().get("distance")).doubleValue() : 0.0;
+            
+            logger.info("Chunk text: {}", text);
+            logger.info("Accuracy Score (Distance): {}", score);
+            
             return new SearchResultDto(
                     doc.getId(),
                     text,
@@ -51,11 +60,16 @@ public class DocumentSearchService {
 
     public List<SearchResultDto> searchBM25(String query, int maxResults) throws Exception {
         List<BM25SearchService.BM25Result> bm25Results = bm25SearchService.search(query, maxResults);
-        return bm25Results.stream().map(res -> new SearchResultDto(
-                res.getId(),
-                res.getText(),
-                res.getScore(),
-                null
-        )).collect(Collectors.toList());
+        return bm25Results.stream().map(res -> {
+            logger.info("BM25 Chunk text: {}", res.getText());
+            logger.info("BM25 Accuracy Score: {}", res.getScore());
+            
+            return new SearchResultDto(
+                    res.getId(),
+                    res.getText(),
+                    res.getScore(),
+                    null
+            );
+        }).collect(Collectors.toList());
     }
 }
