@@ -27,6 +27,7 @@ public class PdfDocumentSplitterService {
     private final ChromaVectorStore defaultVectorStore;
     private final ChromaVectorStore llmVectorStore;
     private final BM25SearchService bm25SearchService;
+    private final DocumentDeduplicationService deduplicationService;
 
     @org.springframework.beans.factory.annotation.Value("${chromadb.url}")
     private String chromaUrl;
@@ -40,19 +41,35 @@ public class PdfDocumentSplitterService {
     public PdfDocumentSplitterService(
             @Qualifier("defaultVectorStore") ChromaVectorStore defaultVectorStore,
             @Qualifier("llmVectorStore") ChromaVectorStore llmVectorStore,
-            BM25SearchService bm25SearchService) {
+            BM25SearchService bm25SearchService,
+            DocumentDeduplicationService deduplicationService) {
         this.defaultVectorStore = defaultVectorStore;
         this.llmVectorStore = llmVectorStore;
         this.bm25SearchService = bm25SearchService;
+        this.deduplicationService = deduplicationService;
     }
 
     public Map<String, Object> processAndIngestDocument(MultipartFile file, boolean useLLMEmbedding) throws Exception {
+
+        String fileHash = deduplicationService.calculateHash(file);
+        
+        if (deduplicationService.isDuplicate(fileHash, useLLMEmbedding)) {
+            logger.warn("Upload rejected: Duplicate file detected (Hash: {})", fileHash);
+            Map<String, Object> response = new HashMap<>();
+            response.put("status", 409); // 409 Conflict
+            response.put("message", "A file with this exact content already exists in the database. Upload skipped.");
+            return response;
+        }
 
         List<Document> documents = parseDocument(file);
         CustomOverlappingSplitter splitter = new CustomOverlappingSplitter(1500, 250);
         List<Document> segments = splitter.apply(documents);
 
         logger.info("Document split into {} chunks.", segments.size());
+        
+        for (Document segment : segments) {
+            segment.getMetadata().put("file_hash", fileHash);
+        }
         
         ChromaVectorStore selectedStore = useLLMEmbedding ? llmVectorStore : defaultVectorStore;
 

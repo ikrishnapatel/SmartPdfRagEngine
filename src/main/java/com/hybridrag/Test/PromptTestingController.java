@@ -21,7 +21,7 @@ public class PromptTestingController {
 
     @GetMapping("/test")
     public String getFoodDetailsData(@RequestParam("input") String input){
-        return promptTemplateTesting.getFoodDetailsData(input);
+        return promptTemplateTesting.practiceCustomDelimiters(input);
     }
 
 
