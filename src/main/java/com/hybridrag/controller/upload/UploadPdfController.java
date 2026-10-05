@@ -49,8 +49,21 @@ public class UploadPdfController {
         } catch (Exception e) {
             logger.error("Error processing document: {}", file.getOriginalFilename(), e);
             Map<String, Object> errorResponse = new HashMap<>();
+            
+            String errorMessage = e.getMessage() != null ? e.getMessage() : e.toString();
+            if (errorMessage.contains("429") || errorMessage.contains("RESOURCE_EXHAUSTED") || errorMessage.contains("quota")) {
+                errorResponse.put("status", 429);
+                errorResponse.put("message", "API token limit exceeded. Please try again later.");
+                return ResponseEntity.status(429).body(errorResponse);
+            }
+            
             errorResponse.put("status", 500);
-            errorResponse.put("message", "Failed to process document: " + e.toString());
+            if (errorMessage.contains("RestClientException") || errorMessage.contains("extracting response")) {
+                errorResponse.put("message", "Failed to communicate with the AI provider. Please check your API configuration or model names.");
+            } else {
+                errorResponse.put("message", "An unexpected error occurred while processing the document.");
+            }
+            
             return ResponseEntity.internalServerError().body(errorResponse);
         }
     }

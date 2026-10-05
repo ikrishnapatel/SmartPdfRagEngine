@@ -30,9 +30,12 @@ public class CustomOverlappingSplitter implements DocumentTransformer {
 
         for (Document document : documents) {
             String text = document.getContent();
-            if (text == null || text.isEmpty()) {
+            if (text == null || text.trim().isEmpty()) {
                 continue;
             }
+            
+            // Sanitize text: replace all multiple whitespaces/newlines with a single space
+            text = text.replaceAll("\\s+", " ").trim();
 
             int length = text.length();
             int start = 0;

@@ -4,6 +4,7 @@ import com.hybridrag.dto.SearchResultDto;
 import com.hybridrag.service.SearchService.DocumentSearchService;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
+@CrossOrigin("*")
 @RequestMapping("/api/v1/documents")
 public class DocumentSearchController {
 
@@ -49,7 +51,9 @@ public class DocumentSearchController {
             List<SearchResultDto> results = searchService.searchBM25(query, maxResults);
             return ResponseEntity.ok(results);
         } catch (Exception e) {
-            return ResponseEntity.internalServerError().body("BM25 Search failed: " + e.getMessage());
+            // Log the raw error instead of sending it to the client
+            e.printStackTrace(); // Or use a logger if injected
+            return ResponseEntity.internalServerError().body("An unexpected error occurred during BM25 search. Please try again later.");
         }
     }
 }
